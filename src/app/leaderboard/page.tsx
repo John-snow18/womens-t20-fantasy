@@ -70,20 +70,13 @@ const teamLeaderboard = Object.entries(teamsData)
   initial={{ opacity: 0, scale: 0.5 }}
   animate={{ opacity: 1, scale: 1 }}
   transition={{ duration: 0.8 }}
-  className="text-4xl sm:text-5xl md:text-6xl font-bold text-cyan-400 text-center mb-10 break-words"
+  className="flex items-center justify-center gap-3 text-4xl sm:text-5xl md:text-6xl font-bold text-cyan-400 text-center mb-10"
 >
-  🏆 LEADERBOARD 🏆
+  <span>🏆</span>
+ <span>LEADERBOARD</span>
+ <span>🏆</span>
 </motion.h1>
-<motion.div
-  animate={{ y: [0, -10, 0] }}
-  transition={{
-    duration: 2,
-    repeat: Infinity,
-  }}
-  className="text-center text-5xl md:text-7xl mb-8"
->
-  🏆
-</motion.div>
+
 
         <div className="space-y-4">
           {teamLeaderboard.map((team, index) => (
