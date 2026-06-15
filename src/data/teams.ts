@@ -1,0 +1,92 @@
+
+export const teamsData = {
+  "ramcharan-x": {
+    name: "Ramcharan X",
+    owner: "Ramcharan",
+    players: [
+      "Izzy Gaze",
+      "Laura Wolvaardt",
+      "Phoebe Litchfield",
+      "Fatima Sana",
+      "Chamari Athapaththu",
+      "Georgia Wareham",
+      "Annabel Sutherland",
+      "Nicola Carey",
+      "Jess Kerr",
+      "Sophie Molineux",
+      "Nandani Sharma",
+    ],
+  },
+
+  "sriman-x": {
+    name: "Sriman X",
+    owner: "Sriman",
+    players: [
+      "Amy Jones",
+      "Jemimah Rodrigues",
+      "Alice Capsey",
+      "Danni Wyatt-Hodge",
+      "Tazmin Brits",
+      "Ash Gardner",
+      "Sophie Devine",
+      "Grace Harris",
+      "Kim Garth",
+      "Meghan Schutt",
+      "Sree Charani",
+    ],
+  },
+
+  "rishwanth-x": {
+    name: "Rishwanth X",
+    owner: "Rishwanth",
+    players: [
+      "Beth Mooney",
+      "Heather Knight",
+      "Georgia Voll",
+      "Amelia Kerr",
+      "Marizanne Kapp",
+      "Tahlia McGrath",
+      "Nadine de Klerk",
+      "Sophie Ecclestone",
+      "Renuka Singh",
+      "Mlaba",
+      "Shafali Verma",
+    ],
+  },
+
+  "honey-x": {
+    name: "Honey X",
+    owner: "Honey",
+    players: [
+      "Smriti Mandhana",
+      "Hayley Matthews",
+      "Nat Sciver-Brunt",
+      "Harmanpreet Kaur",
+      "Richa Ghosh",
+      "Deepti Sharma",
+      "Charlie Dean",
+      "C Henry",
+      "Shabnim Ismail",
+      "Arundhati Reddy",
+      "Kranti Goud",
+    ],
+  },
+
+  "pradeep-x": {
+    name: "Pradeep X",
+    owner: "Pradeep",
+    players: [
+      "Yastika Bhatia",
+      "Georgia Plimmer",
+      "Maddy Green",
+      "Eyman Fatima",
+      "Sophia Dunkley",
+      "Ellyse Perry",
+      "Suzie Bates",
+      "Radha Yadav",
+      "Lauren Bell",
+      "Lea Tahuhu",
+      "Sadia Iqbal",
+    ],
+  },
+};

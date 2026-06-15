@@ -1,113 +1,61 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Trophy } from "lucide-react";
-import { motion } from "framer-motion";
+import { playersData } from "@/data/players";
+import { teamsData } from "@/data/teams";
 
-const teamsData: Record<string, any> = {
-  "ramcharan-x": {
-    name: "Ramcharan X",
-    owner: "Ramcharan",
-    players: [
-      "Izzy Gaze",
-      "Laura Wolvaardt",
-      "Phoebe Litchfield",
-      "Fatima Sana",
-      "Chamari Athapaththu",
-      "Georgia Wareham",
-      "Annabel Sutherland",
-      "Nicola Carey",
-      "Jess Kerr",
-      "Sophie Molineux",
-      "Nandani Sharma",
-    ],
-  },
-
-  "sriman-x": {
-    name: "Sriman X",
-    owner: "Sriman",
-    players: [
-      "Amy Jones",
-      "Jemimah Rodrigues",
-      "Alice Capsey",
-      "Danni Wyatt-Hodge",
-      "Tazmin Brits",
-      "Ash Gardner",
-      "Sophie Devine",
-      "Grace Harris",
-      "Kim Garth",
-      "Meghan Schutt",
-      "Sree Charani",
-    ],
-  },
-
-  "rishwanth-x": {
-    name: "Rishwanth X",
-    owner: "Rishwanth",
-    players: [
-      "Beth Mooney",
-      "Heather Knight",
-      "Georgia Voll",
-      "Amelia Kerr",
-      "Marizanne Kapp",
-      "Tahlia McGrath",
-      "Nadine de Klerk",
-      "Sophie Ecclestone",
-      "Renuka Singh",
-      "Mlaba",
-      "Shafali Verma",
-    ],
-  },
-
-  "honey-x": {
-    name: "Honey X",
-    owner: "Honey",
-    players: [
-      "Smriti Mandhana",
-      "Hayley Matthews",
-      "Nat Sciver-Brunt",
-      "Harmanpreet Kaur",
-      "Richa Ghosh",
-      "Deepti Sharma",
-      "Charlie Dean",
-      "C Henry",
-      "Shabnim Ismail",
-      "Arundhati Reddy",
-      "Kranti Goud",
-    ],
-  },
-
-  "pradeep-x": {
-    name: "Pradeep X",
-    owner: "Pradeep",
-    players: [
-      "Yastika Bhatia",
-      "Georgia Plimmer",
-      "Maddy Green",
-      "Eyman Fatima",
-      "Sophia Dunkley",
-      "Ellyse Perry",
-      "Suzie Bates",
-      "Radha Yadav",
-      "Lauren Bell",
-      "Lea Tahuhu",
-      "Sadia Iqbal",
-    ],
-  },
+type Props = {
+  params: Promise<{
+    team: string;
+  }>;
 };
 
-export default async function TeamPage({
-  params,
-}: {
-  params: Promise<{ team: string }>;
-}) {
+
+function calculateFantasyPoints(player: { runs: number; fours: number; sixes: number; wickets: number; catches: number }) {
+  return (
+    player.runs +
+    player.fours +
+    player.sixes * 2 +
+    player.wickets * 20 +
+    player.catches * 4
+  );
+}
+export default async function TeamPage({ params }: Props) {
   const { team } = await params;
 
-  const teamData = teamsData[team];
+  const teamData = teamsData[team as keyof typeof teamsData];
 
+  const totalTeamPoints = teamData.players.reduce(
+    (sum: number, playerName: string) => {
+      const player =
+      playersData[
+        playerName.toLowerCase().replace(/\s+/g, "-") as keyof typeof playersData
+      ];
+      
+      return player
+      ? sum + calculateFantasyPoints(player)
+      : sum;
+    },
+    0
+  );
+  
+  const topRunScorer = [...teamData.players]
+  .map(
+    (name: string) =>
+      playersData[name.toLowerCase().replace(/\s+/g, "-") as keyof typeof playersData]
+  )
+  .filter(Boolean)
+  .sort((a , b) => b.runs - a.runs)[0];
+  
+  const topWicketTaker = [...teamData.players]
+  .map(
+    (name: string) =>
+      playersData[name.toLowerCase().replace(/\s+/g, "-") as keyof typeof playersData]
+  )
+  .filter(Boolean)
+  .sort((a: any, b: any) => b.wickets - a.wickets)[0];
   if (!teamData) {
     return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center text-3xl">
+      <div className="min-h-screen flex items-center justify-center">
         Team Not Found
       </div>
     );
@@ -115,53 +63,86 @@ export default async function TeamPage({
 
   return (
     <main className="min-h-screen bg-black text-white p-6">
-
       <Link
         href="/"
-        className="inline-flex items-center gap-2 bg-cyan-500 text-black px-4 py-2 rounded-xl font-bold mb-8"
+        className="inline-block bg-cyan-500 text-black px-4 py-2 rounded-xl font-bold mb-8"
       >
-        <ArrowLeft size={18} />
-        Back
+        ← Back
       </Link>
 
-      <motion.div
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h1 className="text-5xl font-extrabold text-center text-cyan-400">
-          {teamData.name}
-        </h1>
+      <h1 className="text-5xl font-bold text-cyan-400 text-center">
+        {teamData.name}
+      </h1>
 
-        <p className="text-center text-gray-400 mt-3 mb-10">
-          Owner: {teamData.owner}
-        </p>
-      </motion.div>
+      <p className="text-center mt-3">
+  Owner: {teamData.owner}
+</p>
+
+<p className="text-center text-2xl font-bold text-yellow-400 mt-4 mb-8">
+  🏆 Total Fantasy Points: {totalTeamPoints}
+</p>
+
+<div className="grid md:grid-cols-2 gap-6 mb-10">
+  <div className="bg-slate-900 border border-orange-500 rounded-2xl p-5 text-center">
+    <h2 className="text-2xl font-bold text-orange-400">
+      ⭐ Top Run Scorer
+    </h2>
+
+    <p className="mt-3 text-xl font-bold">
+      {topRunScorer?.name}
+    </p>
+
+    <p className="text-orange-300">
+      {topRunScorer?.runs} Runs
+    </p>
+  </div>
+
+  <div className="bg-slate-900 border border-purple-500 rounded-2xl p-5 text-center">
+    <h2 className="text-2xl font-bold text-purple-400">
+      🎯 Top Wicket Taker
+    </h2>
+
+    <p className="mt-3 text-xl font-bold">
+      {topWicketTaker?.name}
+    </p>
+
+    <p className="text-purple-300">
+      {topWicketTaker?.wickets} Wickets
+    </p>
+  </div>
+</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        {teamData.players.map((player: string, index: number) => (
-          <motion.div
-            key={player}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-            className="bg-slate-900 border border-cyan-500 rounded-3xl p-6 hover:scale-105 transition duration-300 hover:shadow-[0_0_30px_#22d3ee]"
-          >
-            <div className="h-40 rounded-2xl bg-slate-800 flex items-center justify-center text-5xl">
-              🏏
-            </div>
+        {teamData.players.map((player: string) => (
+  <Link
+    key={player}
+    href={`/player/${player.toLowerCase().replace(/\s+/g, "-")}`}
+  >
+    <div className="bg-slate-900 border border-cyan-500 rounded-2xl p-6 hover:scale-105 transition duration-300 cursor-pointer">
+            <Image
+  src={`/players/${player.toLowerCase().replace(/\s+/g, "-")}.jpg`}
+  alt={player}
+  width={300}
+  height={200}
+  className="w-full h-40 object-contain rounded-xl bg-slate-800"
+/>
 
             <h2 className="text-xl font-bold mt-4">
               {player}
             </h2>
 
-            <div className="flex items-center gap-2 mt-3 text-yellow-400">
-              <Trophy size={18} />
-              <span>Fantasy Points: 0</span>
-            </div>
-          </motion.div>
+            <p className="text-yellow-400 mt-2">
+  Fantasy Points: {
+    calculateFantasyPoints(
+      playersData[
+        player.toLowerCase().replace(/\s+/g, "-") as keyof typeof playersData
+      ]
+    )
+  }
+</p>
+          </div>
+          </Link>
         ))}
-
       </div>
     </main>
   );
