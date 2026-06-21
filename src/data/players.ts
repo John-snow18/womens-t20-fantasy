@@ -306,7 +306,7 @@ export const playersData = {
   wickets: 0,
   fours: 6,
   sixes: 0,
-  catches: 2,
+  catches: 1,
 },
 
 "georgia-voll": {
@@ -330,7 +330,7 @@ export const playersData = {
   matches: 3,
   runs: 80,
   wickets: 2,
-  fours: 10,
+  fours: 9,
   sixes: 0,
   catches: 0,
 },
